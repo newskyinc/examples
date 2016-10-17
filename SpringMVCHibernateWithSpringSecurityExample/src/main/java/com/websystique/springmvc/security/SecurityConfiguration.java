@@ -45,6 +45,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.tokenValiditySeconds(86400).and().csrf().and().exceptionHandling().accessDeniedPage("/Access_Denied");
 	}
 
+	/**
+	 * refer to https://github.com/Baeldung/spring-security-registration/blob/master/src/main/java/org/baeldung/spring/SecSecurityConfig.java
+	 * 
+	 * @return
+	 */
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder(11);
+    }
+	
+	@Bean
+	public DaoAuthenticationProvider authProvider() {
+	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+	    authProvider.setUserDetailsService(userDetailsService);
+	    authProvider.setPasswordEncoder(encoder());
+	    return authProvider;
+	}
+	
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authProvider());
+    }
+    
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
