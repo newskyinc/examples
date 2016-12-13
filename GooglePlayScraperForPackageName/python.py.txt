@@ -1,0 +1,19 @@
+from urllib2 import Request, urlopen, URLError
+
+from HTMLParser import HTMLParser
+
+
+request = Request('https://repl.it/languages/python')
+
+
+try:
+
+  print 'hello'
+
+  response = urlopen(request)
+
+  html = response.read()
+except URLError, e:
+
+  print 'No kittez. Got an error code:'  
+  
